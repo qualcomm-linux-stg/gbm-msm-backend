@@ -1,6 +1,21 @@
 name: Build Yocto for Display
 
 on:
+  workflow_dispatch:
+    inputs:
+      sdk:
+        description: "Build SDK"
+        required: false
+        default: "0"
+      profile:
+        description: "Build profile (pr | full)"
+        required: false
+        default: "full
+    outputs:
+      artifacts_url:
+        description: "URL to retrieve build artifacts"
+        value: ${{ jobs.create-output.outputs.url }}
+
   workflow_call:
     inputs:
       sdk:
