@@ -10,9 +10,9 @@ on:
       profile:
         description: "Build profile (pr | full)"
         required: false
-        default: "full
-    outputs:
-      artifacts_url:
+        default: "full"
+      outputs:
+        artifacts_url:
         description: "URL to retrieve build artifacts"
         value: ${{ jobs.create-output.outputs.url }}
 
