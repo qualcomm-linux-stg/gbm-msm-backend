@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siemens/kas/master/kas/schema-kas.json
+
+header:
+  version: 14
+
+distro: qcom-distro
+
+repos:
+  meta-qcom-distro:
+    url: https://github.com/qualcomm-linux/meta-qcom-distro
+    branch: main
+
+  meta-openembedded:
+    url: https://github.com/openembedded/meta-openembedded
+    branch: master
+    layers:
+      meta-filesystems:
+      meta-gnome:
+      meta-multimedia:
+      meta-networking:
+      meta-oe:
+      meta-python:
+      meta-xfce:
+
+  meta-virtualization:
+    url: https://git.yoctoproject.org/git/meta-virtualization
+    branch: master
+
+  meta-audioreach:
+    url: https://github.com/AudioReach/meta-audioreach
+    branch: master
+
+  meta-selinux:
+    branch: master
+    url: https://git.yoctoproject.org/meta-selinux
+
+  meta-updater:
+    branch: master
+    url: https://github.com/uptane/meta-updater
+
+  meta-security:
+    url: https://git.yoctoproject.org/meta-security
+    branch: master
+    patches:
+      plain:
+        repo: meta-qcom
+        path: patches/0001-wic-wic-need-to-be-moved-to-files-wic-within-the-lay.patch
+    layers:
+      .:
+      meta-tpm:
+
+local_conf_header:
+  virtualization:
+    SKIP_META_VIRT_SANITY_CHECK = "1"
+
+target:
+  - qcom-multimedia-image
+  - qcom-multimedia-proprietary-image
+  - qcom-container-orchestration-image
