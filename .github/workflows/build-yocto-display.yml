@@ -126,7 +126,7 @@ jobs:
 
   compile_warm_up:
     needs: kas-setup
-     if: |
+    if: |
       github.repository_owner == 'qualcomm-linux' ||
       github.repository_owner == 'qualcomm-linux-stg'
     runs-on: [self-hosted, gen-qlnx-stg-u2404-x64-lrg-od-ephem]
@@ -165,7 +165,7 @@ jobs:
 
   compile:
     needs: compile_warm_up
-     if: |
+    if: |
       github.repository_owner == 'qualcomm-linux' ||
       github.repository_owner == 'qualcomm-linux-stg'
     runs-on: [self-hosted, gen-qlnx-stg-u2404-x64-lrg-od-ephem]
@@ -259,7 +259,7 @@ jobs:
           pattern: build-url*
 
   build_successful:
-    if: github.repository_owner == 'qualcomm-linux'
+    #if: github.repository_owner == 'qualcomm-linux'
     needs: compile
     runs-on: ubuntu-latest
     steps:
