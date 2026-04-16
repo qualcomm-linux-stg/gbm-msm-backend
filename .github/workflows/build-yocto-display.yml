@@ -53,7 +53,9 @@ jobs:
           echo "Repo  = ${{ github.repository }}"
 
   kas-setup:
-    if: github.repository_owner == 'qualcomm-linux'
+    if: |
+      github.repository_owner == 'qualcomm-linux' ||
+      github.repository_owner == 'qualcomm-linux-stg'
     runs-on: [self-hosted, gen-qlnx-stg-u2404-x64-lrg-od-ephem]
     steps:
       - name: Setting up kas-container
@@ -87,7 +89,9 @@ jobs:
 
   yocto-run-checks:
     needs: kas-setup
-    if: github.repository_owner == 'qualcomm-linux'
+    if: |
+      github.repository_owner == 'qualcomm-linux' ||
+      github.repository_owner == 'qualcomm-linux-stg'
     runs-on: [self-hosted, gen-qlnx-stg-u2404-x64-lrg-od-ephem]
     steps:
       - uses: actions/checkout@v6
@@ -122,7 +126,9 @@ jobs:
 
   compile_warm_up:
     needs: kas-setup
-    if: github.repository_owner == 'qualcomm-linux'
+     if: |
+      github.repository_owner == 'qualcomm-linux' ||
+      github.repository_owner == 'qualcomm-linux-stg'
     runs-on: [self-hosted, gen-qlnx-stg-u2404-x64-lrg-od-ephem]
     strategy:
       fail-fast: true
@@ -159,7 +165,9 @@ jobs:
 
   compile:
     needs: compile_warm_up
-    if: github.repository_owner == 'qualcomm-linux'
+     if: |
+      github.repository_owner == 'qualcomm-linux' ||
+      github.repository_owner == 'qualcomm-linux-stg'
     runs-on: [self-hosted, gen-qlnx-stg-u2404-x64-lrg-od-ephem]
     outputs:
       url: ${{ steps.compile_kas.outputs.url }}
@@ -238,7 +246,7 @@ jobs:
 
   publish_summary:
     needs: compile
-    if: ${{ always() && github.repository_owner == 'qualcomm-linux' }}
+    #if: ${{ always() && github.repository_owner == 'qualcomm-linux' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
