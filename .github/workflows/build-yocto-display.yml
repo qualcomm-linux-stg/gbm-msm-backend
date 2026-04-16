@@ -14,7 +14,9 @@ on:
       outputs:
         artifacts_url:
         description: "URL to retrieve build artifacts"
-        value: ${{ jobs.create-output.outputs.url }}
+        #value: ${{ jobs.create-output.outputs.url }}
+        # fill this after build is successfully completed.
+        default: "none"
 
   workflow_call:
     inputs:
