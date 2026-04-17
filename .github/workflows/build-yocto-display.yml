@@ -135,11 +135,7 @@ jobs:
       matrix:
         machine:
           - glymur-crd
-          - qcom-armv8a
-          - rb3gen2-core-kit
         distro:
-          - name: nodistro
-            yamlfile: ""
           - name: qcom-distro
             yamlfile: ':ci/qcom-distro.yml'
         kernel:
@@ -176,18 +172,10 @@ jobs:
       matrix:
         machine:
           - glymur-crd
-          - kaanapali-mtp
-          - rb3gen2-core-kit
-          - sm8750-mtp
         distro:
-          - name: nodistro
-            yamlfile: ""
           - name: qcom-distro
             yamlfile: ':ci/qcom-distro.yml'
         kernel:
-          - type: default
-            dirname: ""
-            yamlfile: ""
           - type: 6.18
             dirname: "_linux-qcom-6.18"
             yamlfile: ":ci/linux-qcom-6.18.yml"
@@ -241,7 +229,7 @@ jobs:
           distro_name: ${{matrix.distro.name}}
           kernel_yaml: ${{matrix.kernel.yamlfile}}
           kernel_dirname: ${{matrix.kernel.dirname}}
-          cache_dir: ${{env.CACHE_DIR}}
+          #cache_dir: ${{env.CACHE_DIR}}
           sdk: ${{inputs.sdk}}
 
   publish_summary:
