@@ -42,16 +42,6 @@ env:
   KAS_CLONE_DEPTH: 1
 
 jobs:
-
-  debug-owner:
-    name: Debug repository owner
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print repo info
-        run: |
-          echo "Owner = ${{ github.repository_owner }}"
-          echo "Repo  = ${{ github.repository }}"
-
   kas-setup:
     if: |
       github.repository_owner == 'qualcomm-linux' ||
