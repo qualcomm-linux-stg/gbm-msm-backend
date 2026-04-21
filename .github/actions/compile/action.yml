@@ -24,6 +24,10 @@ inputs:
     required: false
     default: "0"
     description: Set to "1" to build SDK for qcom-armv8a (default kernel only)
+  update_srcrev:
+    required: false
+    default: "false"
+    description: Set to "true" to update SRCREV in meta-qcom msm-gbm-backend.bb to current commit SHA
 
 outputs:
   url:
@@ -72,6 +76,22 @@ runs:
       run: |
         mkdir -p "$KAS_WORK_DIR"
         "$KAS_CONTAINER" dump --resolve-env --resolve-local --resolve-refs "${KAS_YAMLS}" > kas-build.yml
+
+    - name: Update display layers SRCREV
+      if: ${{ inputs.update_srcrev == 'true' }}
+      shell: bash
+      run: |
+        # Fetch repositories using kas
+        "$KAS_CONTAINER" checkout "${KAS_YAMLS}"
+
+        # Update SRCREV in meta-qcom to current commit SHA
+        BB_FILE="${KAS_WORK_DIR}/meta-qcom/recipes-graphics/msm-gbm-backend/msm-gbm-backend.bb"
+        if [ -f "$BB_FILE" ]; then
+          sed -i "s/^SRCREV = .*/SRCREV = \"${GITHUB_SHA}\"/" "$BB_FILE"
+          echo "Updated SRCREV to ${GITHUB_SHA} in $BB_FILE"
+        else
+          echo "Warning: $BB_FILE not found, skipping SRCREV update"
+        fi
 
     - name: Kas qcom world build
       shell: bash
@@ -157,4 +177,3 @@ runs:
         KERNEL_DIRNAME="${INPUTS_KERNEL_DIRNAME}"
         BUILDNAME="${INPUTS_MACHINE}_${INPUTS_DISTRO_NAME}${KERNEL_DIRNAME}"
         FILENAME="build-url_${BUILDNAME}"
-

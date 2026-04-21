@@ -143,6 +143,7 @@ jobs:
           kernel_dirname: ${{matrix.kernel.dirname}}
           #cache_dir: ${{env.CACHE_DIR}}
           sdk: ${{inputs.sdk}}
+          update_srcrev: "true"
 
   compile:
     timeout-minutes: 480
@@ -217,6 +218,7 @@ jobs:
           kernel_dirname: ${{matrix.kernel.dirname}}
           #cache_dir: ${{env.CACHE_DIR}}
           sdk: ${{inputs.sdk}}
+          update_srcrev: "true"
 
   publish_summary:
     needs: compile
