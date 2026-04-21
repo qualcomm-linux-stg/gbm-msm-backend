@@ -38,6 +38,8 @@ CMD="$CMD --dependency $WORK_DIR/oe-core/meta"
 # Disable automatic testing of dependencies
 CMD="$CMD --no-auto-dependency"
 # Set machines to all machines defined in this BSP layer
-CMD="$CMD --machines $(echo $(find $WORK_DIR/meta-qcom/conf/machine/ -maxdepth 1 -name *.conf -exec basename {} .conf \; ))"
+if [ -d "$WORK_DIR/meta-qcom/conf/machine" ]; then
+    CMD="$CMD --machines $(echo $(find $WORK_DIR/meta-qcom/conf/machine/ -maxdepth 1 -name *.conf -exec basename {} .conf \; ))"
+fi
 
 exec $CMD
