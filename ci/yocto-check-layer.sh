@@ -27,6 +27,12 @@ BUILDDIR="$(mktemp -p $WORK_DIR -d -t build-yocto-check-layer-XXXX)"
 source $WORK_DIR/oe-core/oe-init-build-env $BUILDDIR
 git -c advice.detachedHead=false -c init.defaultBranch=master clone --quiet --shared $REPO_DIR meta-qcom
 
+# Check if this is actually a Yocto layer (has conf/layer.conf)
+if [ ! -f "meta-qcom/conf/layer.conf" ]; then
+    echo "INFO: This repository is not a Yocto layer, skipping yocto-check-layer"
+    exit 0
+fi
+
 # Yocto Project layer checking tool
 CMD="yocto-check-layer"
 # Layer to check
