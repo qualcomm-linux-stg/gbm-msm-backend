@@ -3,7 +3,7 @@ header:
 overrides:
     repos:
         oe-core:
-            commit: f235ffc43c7783a84e1ac0dce8489fcba8354e12
+            commit: 8c008f36d7af1e63cb3f4a2ba763efd1f1e5fe4d
         bitbake:
             commit: 5d722b5d65e4eef7befe6376983385421e993f86
         meta-arm:
@@ -17,6 +17,6 @@ overrides:
         meta-selinux:
             commit: 4904b87b12c51a68efc5b9cd45c7b519fdc48af1
         meta-updater:
-            commit: 2f51f8d7fe658a49d0991ddd0d0af7ff1535c6b4
+            commit: d713c99a9ddace090c0efc0ed57022185daa6fb2
         meta-security:
             commit: 596b966a0d047c2f48cb768821558e918ae0c477

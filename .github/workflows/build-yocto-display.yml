@@ -54,6 +54,13 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Update base repos
+        run: |
+          echo "Fetching latest base.lock.yml from meta-qcom repository..."
+          curl -s https://raw.githubusercontent.com/qualcomm-linux/meta-qcom/master/ci/base.lock.yml -o ci/base.lock.yml
+          echo "Updated base.lock.yml with latest layer commits"
+          cat ci/base.lock.yml
+
       - name: Run kas lock
         if: ${{ hashFiles('ci/base.lock.yml') == '' }}
         run: |
