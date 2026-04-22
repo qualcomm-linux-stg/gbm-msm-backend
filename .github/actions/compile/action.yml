@@ -84,11 +84,21 @@ runs:
         # Fetch repositories using kas
         "$KAS_CONTAINER" checkout "${KAS_YAMLS}"
 
-        # Update SRCREV in meta-qcom to current commit SHA
+        # Update SRCREV and SRC_URI in meta-qcom to current commit SHA and repository
         BB_FILE="${KAS_WORK_DIR}/meta-qcom/recipes-graphics/msm-gbm-backend/msm-gbm-backend.bb"
         if [ -f "$BB_FILE" ]; then
+          # Update SRCREV
           sed -i "s/^SRCREV = .*/SRCREV = \"${GITHUB_SHA}\"/" "$BB_FILE"
           echo "Updated SRCREV to ${GITHUB_SHA} in $BB_FILE"
+
+          # Update SRC_URI with current repository URL
+          REPO_URL="https://github.com/${GITHUB_REPOSITORY}.git"
+          sed -i "s|^SRC_URI = \"git://.*\"|SRC_URI = \"git://${REPO_URL#https://};protocol=https;branch=\${BRANCH}\"|" "$BB_FILE"
+          echo "Updated SRC_URI to ${REPO_URL} in $BB_FILE"
+
+          # Display the updated recipe for verification
+          echo "Updated recipe content:"
+          grep -E "^(SRC_URI|SRCREV|BRANCH)" "$BB_FILE" || true
         else
           echo "Warning: $BB_FILE not found, skipping SRCREV update"
         fi
