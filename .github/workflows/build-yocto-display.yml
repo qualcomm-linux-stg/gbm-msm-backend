@@ -11,6 +11,11 @@ on:
         description: "Build profile (pr | full)"
         required: false
         default: "full"
+      run_warm_up:
+        description: "Run compile warm-up"
+        required: false
+        type: boolean
+        default: true
 
   workflow_call:
     inputs:
@@ -119,8 +124,9 @@ jobs:
     timeout-minutes: 480
     needs: kas-setup
     if: |
-      github.repository_owner == 'qualcomm-linux' ||
-      github.repository_owner == 'qualcomm-linux-stg'
+      inputs.run_warm_up &&
+      (github.repository_owner == 'qualcomm-linux' ||
+      github.repository_owner == 'qualcomm-linux-stg')
     runs-on: [self-hosted, gen-qlnx-stg-u2404-x64-lrg-od-ephem]
     strategy:
       fail-fast: true
@@ -154,10 +160,12 @@ jobs:
 
   compile:
     timeout-minutes: 480
-    needs: compile_warm_up
+    needs: [kas-setup, compile_warm_up]
     if: |
-      github.repository_owner == 'qualcomm-linux' ||
-      github.repository_owner == 'qualcomm-linux-stg'
+      always() &&
+      !cancelled() &&
+      (github.repository_owner == 'qualcomm-linux' ||
+      github.repository_owner == 'qualcomm-linux-stg')
     runs-on: [self-hosted, gen-qlnx-stg-u2404-x64-lrg-od-ephem]
     outputs:
       url: ${{ steps.compile_kas.outputs.url }}
