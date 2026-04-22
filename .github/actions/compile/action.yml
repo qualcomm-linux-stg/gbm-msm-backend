@@ -93,8 +93,10 @@ runs:
 
           # Update SRC_URI with current repository URL
           REPO_URL="https://github.com/${GITHUB_REPOSITORY}.git"
-          sed -i "s|^SRC_URI = \"git://.*\"|SRC_URI = \"git://${REPO_URL#https://};protocol=https;branch=\${BRANCH}\"|" "$BB_FILE"
-          echo "Updated SRC_URI to ${REPO_URL} in $BB_FILE"
+          # Remove https:// prefix for git:// format
+          REPO_PATH="${REPO_URL#https://}"
+          sed -i "s|git://github.com/[^;]*|git://${REPO_PATH}|" "$BB_FILE"
+          echo "Updated SRC_URI to use repository ${GITHUB_REPOSITORY} in $BB_FILE"
 
           # Display the updated recipe for verification
           echo "Updated recipe content:"
