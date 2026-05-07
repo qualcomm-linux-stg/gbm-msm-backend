@@ -59,13 +59,18 @@ runs:
     - name: Setup build variables
       shell: bash
       run: |
-        echo "KAS_WORK_DIR=${PWD}/../kas" >> "$GITHUB_ENV"
-        echo "KAS_YAMLS=ci/ci.yml:ci/${INPUTS_MACHINE}.yml${INPUTS_DISTRO_YAML}${INPUTS_KERNEL_YAML}" >> "$GITHUB_ENV"
-        echo "INPUTS_MACHINE=${INPUTS_MACHINE}" >> "$GITHUB_ENV"
-        echo "INPUTS_DISTRO_YAML=${INPUTS_DISTRO_YAML}" >> "$GITHUB_ENV"
-        echo "INPUTS_KERNEL_YAML=${INPUTS_KERNEL_YAML}" >> "$GITHUB_ENV"
-        echo "INPUTS_SDK=${INPUTS_SDK}" >> "$GITHUB_ENV"
+        # use a monthly sstate cache folder
+        echo "DL_DIR=${INPUTS_CACHE_DIR}/downloads" >> $GITHUB_ENV
+        echo "SSTATE_DIR=${INPUTS_CACHE_DIR}/sstate-cache-$(date '+%Y-%m')" >> $GITHUB_ENV
+        echo "KAS_WORK_DIR=${PWD}/../kas" >> $GITHUB_ENV
+        echo "KAS_YAMLS=ci/ci.yml:ci/${INPUTS_MACHINE}.yml${INPUTS_DISTRO_YAML}${INPUTS_KERNEL_YAML}" >> $GITHUB_ENV
+        echo "INPUTS_CACHE_DIR=${INPUTS_CACHE_DIR}" >> $GITHUB_ENV
+        echo "INPUTS_MACHINE=${INPUTS_MACHINE}" >> $GITHUB_ENV
+        echo "INPUTS_DISTRO_YAML=${INPUTS_DISTRO_YAML}" >> $GITHUB_ENV
+        echo "INPUTS_KERNEL_YAML=${INPUTS_KERNEL_YAML}" >> $GITHUB_ENV
+        echo "INPUTS_SDK=${INPUTS_SDK}" >> $GITHUB_ENV
       env:
+        INPUTS_CACHE_DIR: ${{inputs.cache_dir}}
         INPUTS_MACHINE: ${{ inputs.machine }}
         INPUTS_DISTRO_YAML: ${{ inputs.distro_yaml }}
         INPUTS_KERNEL_YAML: ${{ inputs.kernel_yaml }}
@@ -180,7 +185,7 @@ runs:
       with:
         path: ./uploads
         destination: ${{ github.repository_owner }}/${{ github.event.repository.name }}/${{ github.run_id }}-${{ github.run_attempt }}/
-        s3_bucket: qli-stg-gen-qlnx-gh-artifacts
+        s3_bucket: qli-stg-display-gh-artifacts
 
     - name: Print output
       shell: bash

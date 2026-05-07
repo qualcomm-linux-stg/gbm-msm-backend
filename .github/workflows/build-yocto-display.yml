@@ -39,13 +39,14 @@ concurrency:
 
 env:
   KAS_CLONE_DEPTH: 1
+  CACHE_DIR: /efs
 
 jobs:
   kas-setup:
     if: |
       github.repository_owner == 'qualcomm-linux' ||
       github.repository_owner == 'qualcomm-linux-stg'
-    runs-on: [self-hosted, gen-qlnx-stg-u2404-x64-lrg-od-ephem]
+    runs-on: [self-hosted, display-dev-u2404-x64-large-od-ephem]
     steps:
       - name: Setting up kas-container
         run: |
@@ -88,7 +89,7 @@ jobs:
     if: |
       github.repository_owner == 'qualcomm-linux' ||
       github.repository_owner == 'qualcomm-linux-stg'
-    runs-on: [self-hosted, gen-qlnx-stg-u2404-x64-lrg-od-ephem]
+    runs-on: [self-hosted, display-dev-u2404-x64-large-od-ephem]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -127,7 +128,7 @@ jobs:
       inputs.run_warm_up &&
       (github.repository_owner == 'qualcomm-linux' ||
       github.repository_owner == 'qualcomm-linux-stg')
-    runs-on: [self-hosted, gen-qlnx-stg-u2404-x64-lrg-od-ephem]
+    runs-on: [self-hosted, display-dev-u2404-x64-large-od-ephem]
     strategy:
       fail-fast: true
       matrix:
@@ -154,7 +155,7 @@ jobs:
           distro_name: ${{matrix.distro.name}}
           kernel_yaml: ${{matrix.kernel.yamlfile}}
           kernel_dirname: ${{matrix.kernel.dirname}}
-          #cache_dir: ${{env.CACHE_DIR}}
+          cache_dir: ${{env.CACHE_DIR}}
           sdk: ${{inputs.sdk}}
           update_srcrev: "true"
 
@@ -166,7 +167,7 @@ jobs:
       !cancelled() &&
       (github.repository_owner == 'qualcomm-linux' ||
       github.repository_owner == 'qualcomm-linux-stg')
-    runs-on: [self-hosted, gen-qlnx-stg-u2404-x64-lrg-od-ephem]
+    runs-on: [self-hosted, display-dev-u2404-x64-large-od-ephem]
     outputs:
       url: ${{ steps.compile_kas.outputs.url }}
     strategy:
@@ -231,13 +232,15 @@ jobs:
           distro_name: ${{matrix.distro.name}}
           kernel_yaml: ${{matrix.kernel.yamlfile}}
           kernel_dirname: ${{matrix.kernel.dirname}}
-          #cache_dir: ${{env.CACHE_DIR}}
+          cache_dir: ${{env.CACHE_DIR}}
           sdk: ${{inputs.sdk}}
           update_srcrev: "true"
 
   publish_summary:
     needs: compile
-    #if: ${{ always() && github.repository_owner == 'qualcomm-linux' }}
+    if: |
+      github.repository_owner == 'qualcomm-linux' ||
+      github.repository_owner == 'qualcomm-linux-stg'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -250,7 +253,9 @@ jobs:
           pattern: build-url*
 
   build_successful:
-    #if: github.repository_owner == 'qualcomm-linux'
+    if: |
+      github.repository_owner == 'qualcomm-linux' ||
+      github.repository_owner == 'qualcomm-linux-stg'
     needs: compile
     runs-on: ubuntu-latest
     steps:
