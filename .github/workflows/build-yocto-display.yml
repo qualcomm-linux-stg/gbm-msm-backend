@@ -46,7 +46,7 @@ jobs:
     if: |
       github.repository_owner == 'qualcomm-linux' ||
       github.repository_owner == 'qualcomm-linux-stg'
-    runs-on: [self-hosted, display-dev-u2404-x64-large-od-ephem]
+    runs-on: [self-hosted, display-stg-u2404-x64-large-od-ephem]
     steps:
       - name: Setting up kas-container
         run: |
@@ -89,7 +89,7 @@ jobs:
     if: |
       github.repository_owner == 'qualcomm-linux' ||
       github.repository_owner == 'qualcomm-linux-stg'
-    runs-on: [self-hosted, display-dev-u2404-x64-large-od-ephem]
+    runs-on: [self-hosted, display-stg-u2404-x64-large-od-ephem]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -128,7 +128,7 @@ jobs:
       inputs.run_warm_up &&
       (github.repository_owner == 'qualcomm-linux' ||
       github.repository_owner == 'qualcomm-linux-stg')
-    runs-on: [self-hosted, display-dev-u2404-x64-large-od-ephem]
+    runs-on: [self-hosted, display-stg-u2404-x64-large-od-ephem]
     strategy:
       fail-fast: true
       matrix:
@@ -167,7 +167,7 @@ jobs:
       !cancelled() &&
       (github.repository_owner == 'qualcomm-linux' ||
       github.repository_owner == 'qualcomm-linux-stg')
-    runs-on: [self-hosted, display-dev-u2404-x64-large-od-ephem]
+    runs-on: [self-hosted, display-stg-u2404-x64-large-od-ephem]
     outputs:
       url: ${{ steps.compile_kas.outputs.url }}
     strategy:
