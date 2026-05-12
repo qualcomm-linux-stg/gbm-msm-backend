@@ -174,11 +174,22 @@ jobs:
       fail-fast: false
       matrix:
         machine:
-          - glymur-crd
+          - glymur-crd        # glymur (debian build)
+          - iq-615-evk        # talos tesslove
+          - iq-8275-evk       # RB4
+          - iq-9075-evk       # RB8
+          - kaanapali-mtp     # kaanapali
+          - rb3gen2-core-kit  # Kodiak RB3
+          - sm8750-mtp        # Pakala
         distro:
+          - name: nodistro
+            yamlfile: ""
           - name: qcom-distro
             yamlfile: ':ci/qcom-distro.yml'
         kernel:
+          - type: default
+            dirname: ""
+            yamlfile: ""
           - type: 6.18
             dirname: "_linux-qcom-6.18"
             yamlfile: ":ci/linux-qcom-6.18.yml"
@@ -190,16 +201,6 @@ jobs:
             kernel:
                 type: default
           - machine: glymur-crd
-            distro:
-                name: qcom-distro
-            kernel:
-                type: default
-          - machine: qcom-armv8a
-            distro:
-                name: nodistro
-            kernel:
-                type: default
-          - machine: qcom-armv8a
             distro:
                 name: qcom-distro
             kernel:
